@@ -1,0 +1,16 @@
+{
+    "name": "georgeh/beerxml-checker",
+    "description": "Web app to review BeerXML files",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "George Hotelling",
+            "email": "george@hotelling.net"
+        }
+    ],
+    "require": {
+        "georgeh/php-beerxml": "dev-master",
+        "silex/silex": "1.0.*@dev",
+        "twig/twig": ">=1.8,<2.0-dev"
+    }
+}
