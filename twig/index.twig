@@ -2,12 +2,11 @@
 
 {% block body %}
 <div class="jumbotron">
-    <h1>BeerXML Checker</h1>
     <p class="lead">
         Help the <a href="https://github.com/georgeh/php-beerxml">php-beerxml</a> project by uploading your BeerXML file
         and confirming the data. It only takes a minute and the beer you save may be your own.
     </p>
-    <form class="form-inline" enctype="multipart/form-data" action="upload" method="POST">
+    <form class="form-inline" enctype="multipart/form-data" action="/upload" method="POST">
         <label for="beerxml">BeerXML File:</label>
         <input type="file" name="beerxml" id="beerxml" required="required">
         <button class="btn">Upload</button>

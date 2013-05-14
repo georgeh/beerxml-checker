@@ -1,0 +1,214 @@
+{% extends 'layout.twig' %}
+
+
+{% block body %}
+    <div class="accordion" id="recipes-accordion">
+    {% for batch in recipes %}
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <h1><a class="accordion-toggle" data-toggle="collapse" data-parent="#recipes-accordion"
+                       href="#collapse{{ loop.index }}">{{ batch.Name }}</a></h1>
+            </div>
+            <div class="accordion-inner collapse {% if loop.first %}in{% endif %}" id="collapse{{ loop.index }}">
+                <div class="accordion-inner">
+                    <dl class="dl-horizontal span5">
+                        <dt>Brew Date:</dt>
+                        <dd>{{ batch.Date }}</dd>
+                        <dt>Brew Date:</dt>
+                        <dd>{{ batch.Date }}</dd>
+                        <dt>Total Boil Time:</dt>
+                        <dd>{{ batch.BoilTime }}</dd>
+                    </dl>
+
+                    {% if batch.fermentables %}
+                        <h2>Fermentables</h2>
+                        <table class="table table-striped">
+                            <tbody>
+                            {% for fermentable in batch.fermentables %}
+                                <tr>
+                                    <td>{{ fermentable.displayAmount }} ({{ fermentable.amount }} kg)</td>
+                                    <td>{{ fermentable.Name }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+
+                    {% if batch.Miscs %}
+                        <h2>Misc</h2>
+                        <table class="table table-striped">
+                            <tbody>
+                            {% for nonferm in batch.Miscs %}
+                                <tr>
+                                    <td>{{ nonferm.displayAmount }} ({{ nonferm.Amount }})</td>
+                                    <td>{{ nonferm.Name }} @ {{ nonferm.Time }} minutes</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+
+                    <h2>Hops</h2>
+                    <table class="table table-striped">
+                        <tbody>
+                        {% for hop in batch.Hops %}
+                            <tr>
+                                <td>{{ hop.displayAmount }} for {{ hop.displayTime }}</td>
+                                <td>
+                                    {{ hop.Name }}<br>
+                                    {{ hop.Amount }} kg<br>
+                                    {{ hop.Alpha }}% {{ hop.Form }} @ {{ hop.Time }} minutes<br>
+                                    Type: {{ hop.Type }}<br>
+                                    Use: {{ hop.Use }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+
+                    <h2>Yeast</h2>
+
+                    {% for yeast in batch.Yeasts %}
+                        <dl class="dl-horizontal">
+                            <dt>Name:</dt>
+                            <dd>{{ yeast.Name }}</dd>
+                            <dt>Manufacturer:</dt>
+                            <dd>{{ yeast.Name }}</dd>
+                            <dt>Product ID:</dt>
+                            <dd>{{ yeast.ProductID }}</dd>
+                            <dt>Type:</dt>
+                            <dd>{{ yeast.Type }}</dd>
+                            <dt>Flocculation:</dt>
+                            <dd>{{ yeast.Flocculation }}</dd>
+                            <dt>Attenuation:</dt>
+                            <dd>{{ yeast.Attenuation }}%</dd>
+                            <dt>Temperature Range:</dt>
+                            <dd>{{ yeast.dispMinTemp }} ({{ yeast.minTemperature }}&deg;C)-{{ yeast.dispMaxTemp }}
+                                ({{ yeast.MaxTemperature }}&deg;C)
+                            </dd>
+                            <dt>Amount:</dt>
+                            <dd>{{ yeast.Amount }}</dd>
+                        </dl>
+                    {% endfor %}
+
+                    <h2>Equipment Profile</h2>
+
+                    <h3>{{ batch.equipment.Name }}</h3>
+                    <dl class="dl-horizontal">
+                        <dt>Batch Size:</dt>
+                        <dd>{{ batch.equipment.displayBatchSize }}({{ batch.equipment.BatchSize }} liters)</dd>
+                        <dt>Boil Volume:</dt>
+                        <dd>{{ batch.equipment.displayBoilSize }} ({{ batch.equipment.BoilSize }} liters)</dd>
+                        <dt>Evaporation Rate:</dt>
+                        <dd>{{ batch.equipment.EvapRate }}% per hour</dd>
+                        <dt>Mash Tun Dead Space:</dt>
+                        <dd>{{ batch.equipment.displayLauterDeadspace }} ({{ batch.equipment.lauterDeadspace }}
+                            liters)
+                        </dd>
+                        <dt>Mash Tun Weight:</dt>
+                        <dd>{{ batch.equipment.displayTunWeight }} ({{ batch.equipment.TunWeight }} kg)</dd>
+                        <dt>Hop Utilization:</dt>
+                        <dd>{{ batch.equipment.hopUtilization }}%</dd>
+                        <dt>Mash Tun Volume:</dt>
+                        <dd>{{ batch.equipment.displayTunVolume }} ({{ batch.equipment.TunVolume }} liters)</dd>
+                        <dt>Loss:</dt>
+                        <dd>{{ batch.equipment.displayTrubChillerLoss }} ({{ batch.equipment.trubChillerLoss }}
+                            liters)
+                        </dd>
+                        <dt>Mash Tun Specific Heat:</dt>
+                        <dd>{{ batch.equipment.TunSpecificHeat }} Cal/gram per &deg;C</dd>
+                    </dl>
+
+                    <h2>Mash Profile</h2>
+
+                    <h3>{{ batch.mash.Name }}</h3>
+
+                    {{ batch.mash.Notes|raw }}
+
+                    <dl class="dl-horizontal">
+                        <dt>Grain Temperature:</dt>
+                        <dd>{{ batch.mash.GrainTemp }} &deg;C</dd>
+                        <dt>Sparge Temperature:</dt>
+                        <dd>{{ batch.mash.SpargeTemp }} &deg;C</dd>
+                        <dt>Tun Temperature:</dt>
+                        <dd>{{ batch.mash.TunTemp }} &deg;C</dd>
+                        <dt>PH:</dt>
+                        <dd>{{ batch.mash.PH }} &deg;C</dd>
+                    </dl>
+
+                    <h3>Steps</h3>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Time</th>
+                            <th>Temp</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for step in batch.mash.mashSteps %}
+                            <tr>
+                                <td>{{ step.Name }}</td>
+                                <td>{{ step.Type }}</td>
+                                <td>{{ step.StepTime }}</td>
+                                <td>{{ step.StepTemp }} &deg;C</td>
+                                <td>{{ step.Description|raw }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <h2>Water Profile</h2>
+                    {% for water in batch.waters %}
+                        <h3>{{ water.Name }}</h3>
+
+                        <dl class="dl-horizontal">
+                            <dt>Calicum:</dt>
+                            <dd>{{ water.Calcium }} ppm</dd>
+                            <dt>Bicarbonate:</dt>
+                            <dd>{{ water.Bicarbonate }} ppm</dd>
+                            <dt>Sulfate:</dt>
+                            <dd>{{ water.Sulfate }} ppm</dd>
+                            <dt>Chloride:</dt>
+                            <dd>{{ water.Chloride }} ppm</dd>
+                            <dt>Sodium:</dt>
+                            <dd>{{ water.Sodium }} ppm</dd>
+                            <dt>Magnesium:</dt>
+                            <dd>{{ water.Magnesium }} ppm</dd>
+                            <dt>PH:</dt>
+                            <dd>{{ water.PH }}%</dd>
+                        </dl>
+                    {% endfor %}
+
+                    <h2>Fermentation</h2>
+                    <dl class="dl-horizontal">
+                        <dt>Primary:</dt>
+                        <dd>{{ batch.PrimaryAge }} days @ {{ batch.PrimaryTemp }}&deg;C</dd>
+
+                        <dt>Secondary:</dt>
+                        <dd>{{ batch.SecondaryAge }} days @ {{ batch.SecondaryTemp }}&deg;C</dd>
+
+                        <dt>Tertiary:</dt>
+                        <dd>{{ batch.TertiaryAge }} days @ {{ batch.TertiaryTemp }}&deg;C</dd>
+
+                        <dt>Age:</dt>
+                        <dd>{{ batch.Age }} days @ {{ batch.AgeTemp }}&deg;C</dd>
+                    </dl>
+
+                    <h2>Style</h2>
+
+                    <h3>{{ batch.style.name }}</h3>
+                    <dl class="dl-horizontal">
+
+
+                    </dl>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+{% endblock %}
