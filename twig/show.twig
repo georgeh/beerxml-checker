@@ -107,6 +107,7 @@
                     </dl>
                 {% endfor %}
 
+                {% if batch.equipment %}
                 <h2>Equipment Profile</h2>
 
                 <h3>{{ batch.equipment.Name }}</h3>
@@ -134,7 +135,9 @@
                     <dt>Mash Tun Specific Heat:</dt>
                     <dd>{{ batch.equipment.TunSpecificHeat }} Cal/gram per &deg;C</dd>
                 </dl>
+                {% endif %}
 
+                {% if batch.mash %}
                 <h2>Mash Profile</h2>
 
                 <h3>{{ batch.mash.Name }}</h3>
@@ -177,6 +180,7 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                {% endif %}
 
                 <h2>Water Profile</h2>
                 {% for water in batch.waters %}
@@ -215,6 +219,7 @@
                     <dd>{{ batch.Age }} days @ {{ batch.AgeTemp }}&deg;C</dd>
                 </dl>
 
+                {% if batch.style %}
                 <h2>Style</h2>
 
                 <h3>{{ batch.style.name }}</h3>
@@ -222,6 +227,7 @@
 
 
                 </dl>
+                {% endif %}
             </div>
         </div>
         </div>
